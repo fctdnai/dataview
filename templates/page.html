@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>{{SITE_TITLE}} — {{PAGE_TITLE}}</title>
+  <link rel="stylesheet" href="{{BASE_PATH}}/assets/css/site.css"/>
+</head>
+<body>
+  <div class="dv-shell">
+    <aside class="dv-nav" id="dv-nav"></aside>
+    <main class="dv-main">
+      <header class="dv-header">
+        <h1>{{PAGE_TITLE}}</h1>
+        <p class="dv-muted">Tema: <code>{{SLUG}}</code></p>
+      </header>
+
+      <article class="dv-content" id="dv-content">
+        <div class="dv-empty">
+          <p>Sem conteúdo ainda. Exporte o relatório para <code>reports/{{SLUG}}/report.html</code>.</p>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    window.DATAVIEW_BASE = "{{BASE_PATH}}";
+    window.DATAVIEW_SLUG = "{{SLUG}}";
+  </script>
+  <script src="{{BASE_PATH}}/assets/js/site.js"></script>
+</body>
+</html>
