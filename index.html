@@ -1,36 +1,42 @@
 <!doctype html>
-<html lang="pt">
+<html lang="pt-br">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DataView</title>
-  <link rel="stylesheet" href="/dataview/assets/css/site.css"/>
+  <link rel="stylesheet" href="assets/css/site.css" />
 </head>
 <body>
-  <div class="dv-shell">
-    <aside class="dv-nav" id="dv-nav"></aside>
-    <main class="dv-main">
-      <header class="dv-header">
-        <h1>DataView</h1>
-        <p>Menu principal de relatórios e visualizações.</p>
-      </header>
-
-      <div class="dv-grid">
-        
-            <section class="dv-card">
-              <h2>Analysis</h2>
-              <ul class="dv-links">
-                <li><a href="/dataview/reports/micro-analysis/">Micro Analysis</a></li><li><a href="/dataview/reports/raw-views/">Raw Views</a></li>
-              </ul>
-            </section>
-            
-      </div>
-    </main>
-  </div>
+  <header>
+    <h1>DataView</h1>
+    <p>Relatórios disponíveis (HTML). Fonte Arial aplicada globalmente.</p>
+  </header>
+  <main>
+    <ul id="list"></ul>
+  </main>
 
   <script>
-    window.DATAVIEW_BASE = "/dataview";
+    // Lista fixa: edite manualmente conforme seus arquivos reais
+    const links = [
+      // Exemplo (ajuste para o caminho real dos seus HTMLs):
+      // { label: "Raw Views - report", href: "reports/raw-views/report.html" },
+    ];
+
+    const ul = document.getElementById("list");
+    if (!links.length) {
+      const li = document.createElement("li");
+      li.textContent = "Edite o index.html e adicione links para seus arquivos HTML.";
+      ul.appendChild(li);
+    } else {
+      links.forEach(x => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = x.href;
+        a.textContent = x.label;
+        li.appendChild(a);
+        ul.appendChild(li);
+      });
+    }
   </script>
-  <script src="/dataview/assets/js/site.js"></script>
 </body>
 </html>
