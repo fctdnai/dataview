@@ -1,58 +1,113 @@
 <!doctype html>
 <html lang="pt-br">
 <head>
-<style>
-  body {
-    font-family: Arial, Helvetica, sans-serif;
-  }
-</style>
-
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DataView</title>
-  <link rel="stylesheet" href="assets/css/site.css" />
+
+  <!-- Estilo global -->
+  <style>
+    html, body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      padding: 24px;
+      line-height: 1.4;
+    }
+
+    nav {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 24px;
+    }
+
+    nav a {
+      text-decoration: none;
+      margin-right: 8px;
+      color: #0066cc;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    header h1 {
+      margin: 0 0 8px 0;
+    }
+
+    main ul {
+      margin: 12px 0 0 18px;
+    }
+
+    main li {
+      margin-bottom: 6px;
+    }
+  </style>
 </head>
+
 <body>
-<nav style="padding:12px;border-bottom:1px solid #ddd;margin-bottom:16px;
-            font-family:Arial, Helvetica, sans-serif;">
-  <a href="./index.html">Home</a> |
-  <a href="./reports/raw-views/index.html">Raw Views</a> |
-  <a href="./reports/raw-views/report.html">Raw Views (Report)</a> |
-  <a href="./reports/micro-analysis/index.html">Micro Analysis</a>
-</nav>
 
+  <!-- Menu principal -->
+  <nav>
+    <a href="./index.html">Home</a> |
+    <a href="./reports/raw-views/index.html">Raw Views</a> |
+    <a href="./reports/raw-views/report.html">Raw Views (Report)</a> |
+    <a href="./reports/micro-analysis/index.html">Micro Analysis</a>
+  </nav>
 
-
+  <!-- Cabeçalho -->
   <header>
     <h1>DataView</h1>
-    <p>Relatórios disponíveis (HTML). Fonte Arial aplicada globalmente.</p>
+    <p>
+      Relatórios disponíveis (HTML). Fonte Arial aplicada globalmente.
+    </p>
   </header>
+
+  <!-- Conteúdo principal -->
   <main>
-    <ul id="list"></ul>
+    <h2>Índice geral</h2>
+
+    <ul>
+      <li>
+        <a href="reports/raw-views/index.html">
+          Raw Views – índice de relatórios
+        </a>
+      </li>
+      <li>
+        <a href="reports/raw-views/report.html">
+          Raw Views – relatório consolidado
+        </a>
+      </li>
+      <li>
+        <a href="reports/micro-analysis/index.html">
+          Micro Analysis
+        </a>
+      </li>
+    </ul>
+
+    <h2>Downloads</h2>
+    <ul>
+      <li>
+        <a href="reports/raw-views/assets/tables/meso.xlsx">
+          Tabela – meso.xlsx
+        </a>
+      </li>
+      <li>
+        <a href="reports/raw-views/assets/packages/results-20251213T005414Z-1-001.zip">
+          Resultados completos (ZIP)
+        </a>
+      </li>
+    </ul>
+
+    <h2>Notas</h2>
+    <p>
+      Este site é publicado como HTML estático no GitHub Pages.
+      Não utiliza Jekyll, temas ou includes dinâmicos.
+    </p>
   </main>
 
-  <script>
-    // Lista fixa: edite manualmente conforme seus arquivos reais
-    const links = [
-      // Exemplo (ajuste para o caminho real dos seus HTMLs):
-      // { label: "Raw Views - report", href: "reports/raw-views/report.html" },
-    ];
-
-    const ul = document.getElementById("list");
-    if (!links.length) {
-      const li = document.createElement("li");
-      li.textContent = "Edite o index.html e adicione links para seus arquivos HTML.";
-      ul.appendChild(li);
-    } else {
-      links.forEach(x => {
-        const li = document.createElement("li");
-        const a = document.createElement("a");
-        a.href = x.href;
-        a.textContent = x.label;
-        li.appendChild(a);
-        ul.appendChild(li);
-      });
-    }
-  </script>
 </body>
 </html>
