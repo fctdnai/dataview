@@ -15,6 +15,8 @@ suppressPackageStartupMessages({
   library(stringr)
   library(scales)
   library(htmlwidgets)
+  library(readxl)
+
 })
 
 `%||%` <- function(a, b) if (!is.null(a)) a else b
@@ -22,8 +24,24 @@ suppressPackageStartupMessages({
 # ------------------------------------------------------------------------------
 # 1) DADOS
 # ------------------------------------------------------------------------------
-stopifnot(exists("x3_NOVO_DadosIntegradosAgentesTodosDetalhado"))
-dados_raw <- x3_NOVO_DadosIntegradosAgentesTodosDetalhado %>% as.data.frame()
+xlsx_path <- file.path("data", "x3-NOVO-DadosIntegradosAgentesTodosDetalhado.xlsx")
+
+if (!file.exists(xlsx_path)) {
+  xlsx_path <- file.path("shiny-app", "data", "x3-NOVO-DadosIntegradosAgentesTodosDetalhado.xlsx")
+}
+
+if (!file.exists(xlsx_path)) {
+  stop(
+    "Não encontrei o Excel em:\n",
+    " - data/x3-NOVO-DadosIntegradosAgentesTodosDetalhado.xlsx\n",
+    " - shiny-app/data/x3-NOVO-DadosIntegradosAgentesTodosDetalhado.xlsx\n",
+    "Coloque o arquivo em shiny-app/data/ ou rode o app dentro de shiny-app/."
+  )
+}
+
+dados_raw <- readxl::read_excel(xlsx_path) %>% as.data.frame()
+
+
 
 req_cols <- c("Agente", "Agente Padronizado", "Tema Nível", "Nome Filme")
 miss <- setdiff(req_cols, names(dados_raw))
@@ -171,7 +189,7 @@ next_version_path <- function(prefix = "dispersao_agentes", ext = ".html") {
   files <- list.files(outputs_dir, pattern = paste0("^", prefix, "_v\\d{3}\\", ext, "$"), full.names = FALSE)
   v <- 0L
   if (length(files) > 0) {
-    nums <- suppressWarnings(as.integer(str_extract(files, "(?<=_v)\\d{3}")))
+    nums <- suppressWarnings(as.integer(stringr::str_extract(files, "(?<=_v)\\d{3}")))
     nums <- nums[!is.na(nums)]
     if (length(nums) > 0) v <- max(nums)
   }
@@ -345,24 +363,26 @@ make_plotly_scatter <- function(d_points, d_base, xcol, ycol, var_tamanho = "non
     } else d_points$TamanhoPonto <- 10
   }
   
-  # Hover agentes (inclui macro/caregoria/dna)
-  mac <- if ("Macrocategoria" %in% names(d_points)) safe_chr(d_points$Macrocategoria) else rep("", nrow(d_points))
-  careg <- if ("Caregoria" %in% names(d_points)) safe_chr(d_points$Caregoria) else rep("", nrow(d_points))
-  dna <- if ("DNA-Mnem" %in% names(d_points)) safe_chr(d_points$`DNA-Mnem`) else rep("", nrow(d_points))
-  
-  d_points$hover <- paste0(
-    "<b>Filme:</b> ", safe_chr(d_points$FilmeNome),
-    "<br><b>Categoria_Agente:</b> ", safe_chr(d_points$Categoria_Agente),
-    "<br><b>Agente Padronizado:</b> ", safe_chr(d_points$AgentePad),
-    "<br><b>Tema:</b> ", safe_chr(d_points$TemaNivel),
-    if (any(mac != "")) paste0("<br><b>Macrocategoria:</b> ", mac) else "",
-    if (any(careg != "")) paste0("<br><b>Caregoria:</b> ", careg) else "",
-    if (any(dna != "")) paste0("<br><b>DNA-Mnem:</b> ", dna) else "",
-    if ("n" %in% names(d_points)) paste0("<br><b>n (agregado):</b> ", d_points$n) else "",
-    "<hr>",
-    "<b>X:</b> ", format(d_points[[xcol]], digits = 6),
-    "<br><b>Y:</b> ", format(d_points[[ycol]], digits = 6)
-  )
+
+# Hover agentes (inclui macro/caregoria/dna) — corrigido linha-a-linha
+mac <- if ("Macrocategoria" %in% names(d_points)) safe_chr(d_points$Macrocategoria) else rep("", nrow(d_points))
+careg <- if ("Caregoria" %in% names(d_points)) safe_chr(d_points$Caregoria) else rep("", nrow(d_points))
+dna <- if ("DNA-Mnem" %in% names(d_points)) safe_chr(d_points$`DNA-Mnem`) else rep("", nrow(d_points))
+
+d_points$hover <- paste0(
+  "<b>Filme:</b> ", safe_chr(d_points$FilmeNome),
+  "<br><b>Categoria_Agente:</b> ", safe_chr(d_points$Categoria_Agente),
+  "<br><b>Agente Padronizado:</b> ", safe_chr(d_points$AgentePad),
+  "<br><b>Tema:</b> ", safe_chr(d_points$TemaNivel),
+  ifelse(mac != "", paste0("<br><b>Macrocategoria:</b> ", mac), ""),
+  ifelse(careg != "", paste0("<br><b>Caregoria:</b> ", careg), ""),
+  ifelse(dna != "", paste0("<br><b>DNA-Mnem:</b> ", dna), ""),
+  if ("n" %in% names(d_points)) paste0("<br><b>n (agregado):</b> ", d_points$n) else "",
+  "<hr>",
+  "<b>X:</b> ", format(d_points[[xcol]], digits = 6),
+  "<br><b>Y:</b> ", format(d_points[[ycol]], digits = 6)
+)
+
   
   p <- plot_ly()
   
